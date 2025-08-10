@@ -1,0 +1,194 @@
+ {"products":[
+   {
+    "id": "01",
+    "pname": "Soft chairs",
+    "price": "19$",
+    "image": "/home/1.png",
+    "category": "home"
+
+},
+{
+    "id": "02",
+    "pname": "Table Lamp",
+    "price": "19$",
+    "image": "/home/2.png",
+    "category": "home"
+           
+},
+{
+    "id": "03",
+    "pname": "Comforter",
+    "price": "19$",
+    "image": "/home/3.png",
+    "category":"home"
+           
+},
+{
+    "id": "04",
+    "pname": "Pot",
+    "price": "19$",
+    "image": "/home/4.png",
+    "category":["home","Recommended items"]
+           
+},
+{
+    "id": "05",
+    "pname": "Kitchen mixture",
+    "price": "100$",
+    "image": "/home/5.png",
+    "category": "home"
+           
+},
+{
+    "id": "06",
+    "pname": "Coffee maker",
+    "price": "39$",
+    "image": "/home/6.png",
+    "category": "home"
+           
+},
+{
+    "id": "07",
+    "pname": "Home appilance",
+    "price": "19$",
+    "image": "/home/7.jpg",
+    "category": "home"
+           
+},
+{
+    "id": "08",
+    "pname": "Decorating plant",
+    "price": "10$",
+    "image": "/home/8.png",
+    "category": "home"
+           
+},
+{
+    "id": "09",
+    "pname": "Smartwatches",
+    "price": "19$",
+    "image": "/electronic/9.png",
+    "discount": "25%",
+    "category": ["electronics", "deals"]
+ },
+ {
+    "id": "10",
+    "pname": "Cameras",
+    "price": "89$",
+    "image": "/electronic/10.png",
+    "discount": "40%",
+    "category": ["electronics", "deals"]
+
+ },
+ {
+    "id": "11",
+    "pname": "Headphones",
+    "price": "10$",
+    "image": "/electronic/11.png",
+    "discount": "25%",
+    "category": ["electronics", "deals"]
+ },
+ {
+    "id": "12",
+    "pname": "Electric Kettle",
+    "price": "90$",
+    "image": "/electronic/12.png",
+    "category": ["electronics", "Recommanded items"]
+ },
+ {
+    "id": "13",
+    "pname": "Gaming set",
+    "price": "35$",
+    "image": "/electronic/13.png",
+    "category":"electronics"
+},
+ {
+    "id": "14",
+    "pname": "Laptop & Pc",
+    "price": "340$",
+    "image": "/electronic/14.png",
+    "discount": "15%",
+    "category":["electronics", "deals"]
+},
+ {
+    "id": "15",
+    "pname": "Smart phones",
+    "price": "19$",
+    "image": "/electronic/15.png",
+    "discount": "25%",
+    "category":["electronics", "deals"]
+},
+ {
+    "id": "16",
+    "pname": "Iphones",
+    "price": "240$",
+    "image": "/electronic/16.png",
+    "category":"electronics"
+},
+{
+    "id": "17",
+    "pname": "T-shirts with multiple colors, for men",
+    "price": "10.30$",
+    "image": "/Recommended/17.png",
+    "category": "Recommended items"
+
+},
+{
+    "id": "18",
+    "pname": "Brown winter coat medium size",
+    "price": "10.30$",
+    "image": "/Recommended/18.jpg",
+    "category": "Recommended items"
+           
+},
+{
+    "id": "19",
+    "pname": "winter coat medium size",
+    "price": "12.50$",
+    "image": "/Recommended/19.png",
+    "category":"Recommended items"
+           
+},
+{
+    "id": "20",
+    "pname": "Blue wallet for men leather meterial",
+    "price": "34.00$",
+    "image": "/Recommended/20.png",
+    "category":"Recommended items"
+           
+},
+{
+    "id": "21",
+    "pname": "jeans bag for travel, for women",
+    "price": "99.00$",
+    "image": "/Recommended/bag.png",
+    "category": "Recommended items"
+           
+},
+{
+    "id": "22",
+    "pname": "Jeans shorts for men blue color",
+    "price": "9.99$",
+    "image": "/Recommended/22.png",
+    "category": "Recommended items"
+           
+},
+ {
+    "id": "23",
+    "pname": "Canon camera black, 100x zoom",
+    "price": "89$",
+    "image": "/electronic/10.png",
+    "discount": "40%",
+    "category": "Recommended items"
+
+ },
+  {
+    "id": "24",
+    "pname": "Headset for gaming with mic",
+    "price": "35$",
+    "image": "/electronic/11.png",
+    "category":"Recommended items"
+}
+]
+
+}
