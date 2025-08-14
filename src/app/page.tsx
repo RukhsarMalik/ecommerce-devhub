@@ -1,20 +1,17 @@
 
-import Header from "./components/Header";
 import DealsSection from "./components/Deals";
 import ElectronicsSection from "./components/ElectronicsSection";
-import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import HomeDecorSection from "./components/HomeSection";
 import InquirySection from "./components/InquirySection";
 import RecommendedItems from "./components/Recommended";
 import Services from "./components/Services";
-import SubscriberSection from "./components/Subscribe";
 import SuppliersSection from "./components/SupplierSection";
 
 export default function Home() {
   return (
-    <div className="bg-[#E3F0FF]">
-      <Header/>
+    <div className="bg-gray-50">
+      
       <Hero/>
       <DealsSection/>
       <HomeDecorSection/>
@@ -23,8 +20,7 @@ export default function Home() {
       <RecommendedItems/>
       <Services/>
       <SuppliersSection/>
-      <SubscriberSection/>
-      <Footer/>
+      
 
     </div>
   );

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import data from "../../../data.json";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -47,9 +48,11 @@ const ElectronicsSection: React.FC = () => {
        
 
         {/* Button */}
+        <Link href="/product-detail-page">
         <button className="relative z-10 w-[123px] h-[40px] bg-white text-black rounded-md text-[16px] mt-4">
           Source Now
         </button>
+       </Link>
       </div>
 
       {/* Right side products grid */}
