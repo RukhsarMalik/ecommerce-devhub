@@ -256,6 +256,19 @@ export default function MyCartPage() {
           ))}
         </div>
       </div>
+
+       {/* Advertisement */}
+      <div className="w-full lg:max-w-[1180px] mb-3 rounded lg:h-[120px] bg-gradient-to-r from-[#237CFF] to-[#005ADE] flex flex-col md:flex-row justify-between items-center px-6 text-white">
+        <div>
+          <h3 className="text-[24px] font-semibold">
+            Super discount on more than 100 USD
+          </h3>
+          <p className="text-[16px]">Have you ever finally just write dummy info</p>
+        </div>
+        <button className="bg-[#FF9017] mb-2 md:mb-0 px-4 py-2 rounded font-semibold mt-2 md:mt-0">
+          Shop Now
+        </button>
+      </div>
     </div>
   );
 }

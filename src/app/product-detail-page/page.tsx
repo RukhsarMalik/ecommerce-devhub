@@ -151,13 +151,13 @@ export default function ProductViewPage() {
   });
 
   return (
-    <div className="w-[1200px] mx-auto min-h-screen font-sans bg-gray-50">
+    <div className="w-full max-w-[1200px] mx-auto min-h-screen font-sans bg-gray-50">
       {/* Breadcrumb */}
-      <div className="w-full max-w-[1440px] mx-auto h-[64px] flex items-center px-4 text-gray-600 text-sm">
+      <div className="w-full max-w-[1440px] mx-auto h-auto min-h-[48px] flex flex-wrap items-center px-4 text-gray-600 text-sm">
         Home &gt; Clothing &gt; Men&apos;s Wear &gt; Summer Clothing
       </div>
 
-      <div className="flex max-w-[1440px] mx-auto">
+      <div className="flex flex-col lg:flex-row max-w-[1440px] mx-auto">
         {/* Sidebar */}
         <div className=" hidden lg:block w-[240px] bg-gray-50 p-4">
           <div>
@@ -230,55 +230,55 @@ export default function ProductViewPage() {
             )}
           </div>
           {/* Price Range */}
-<div className="mt-6 border-gray-300 pt-2 border-t">
-  <div
-    className="flex justify-between items-center cursor-pointer"
-    onClick={() => toggleCollapse("price")}
-  >
-    <h3 className="font-semibold">Price Range</h3>
-    {collapsed["price"] ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-  </div>
+        <div className="mt-6 border-gray-300 pt-2 border-t">
+          <div
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => toggleCollapse("price")}
+          >
+            <h3 className="font-semibold">Price Range</h3>
+            {collapsed["price"] ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+          </div>
 
-  {!collapsed["price"] && (
-    <div className="mt-3 space-y-3">
-      {/* Dual Range Slider */}
-      <div className="relative w-full h-6">
-        {/* Track */}
-        <div className="absolute top-1/2 -translate-y-1/2 h-1 w-full bg-gray-300 rounded"></div>
+          {!collapsed["price"] && (
+            <div className="mt-3 space-y-3">
+              {/* Dual Range Slider */}
+              <div className="relative w-full h-6">
+                {/* Track */}
+                <div className="absolute top-1/2 -translate-y-1/2 h-1 w-full bg-gray-300 rounded"></div>
 
-        {/* Active Range Highlight */}
-        <div
-          className="absolute top-1/2 -translate-y-1/2 h-1 bg-blue-500 rounded"
-          style={{
-            left: `${(minPrice / 1000) * 100}%`,
-            right: `${100 - (maxPrice / 1000) * 100}%`,
-          }}
-        ></div>
+                {/* Active Range Highlight */}
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 h-1 bg-blue-500 rounded"
+                  style={{
+                    left: `${(minPrice / 1000) * 100}%`,
+                    right: `${100 - (maxPrice / 1000) * 100}%`,
+                  }}
+                ></div>
 
-        {/* Min Handle */}
-        <input
-          type="range"
-          min="0"
-          max="1000"
-          value={minPrice}
-          onChange={(e) =>
-            setMinPrice(Math.min(Number(e.target.value), maxPrice - 50))
-          }
-          className="absolute w-full pointer-events-none appearance-none bg-transparent accent-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto"
-        />
+              {/* Min Handle */}
+              <input
+                type="range"
+                min="0"
+                max="1000"
+                value={minPrice}
+                onChange={(e) =>
+                  setMinPrice(Math.min(Number(e.target.value), maxPrice - 50))
+                }
+                className="absolute w-full pointer-events-none appearance-none bg-transparent accent-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto"
+              />
 
-        {/* Max Handle */}
-        <input
-          type="range"
-          min="0"
-          max="1000"
-          value={maxPrice}
-          onChange={(e) =>
-            setMaxPrice(Math.max(Number(e.target.value), minPrice + 50))
-          }
-          className="absolute w-full pointer-events-none appearance-none bg-transparent accent-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto"
-        />
-      </div>
+              {/* Max Handle */}
+              <input
+                type="range"
+                min="0"
+                max="2000"
+                value={maxPrice}
+                onChange={(e) =>
+                  setMaxPrice(Math.max(Number(e.target.value), minPrice + 50))
+                }
+                className="absolute w-full pointer-events-none appearance-none bg-transparent accent-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto"
+              />
+            </div>
 
       {/* Min/Max Inputs */}
       <div className="flex items-center gap-2">
@@ -373,7 +373,7 @@ export default function ProductViewPage() {
         <div className="flex-1 px-4 py-6">
           
            {/* Top Filter Bar */}
-          <div className="flex justify-between items-center w-[920px] h-[62px] bg-white rounded border border-gray-300 shadow px-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full h-auto bg-white rounded border border-gray-300 shadow px-4 mb-4">
             <span className="text-sm">12,911 items in <strong>Mobile accessory</strong></span>
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2 text-sm">
@@ -400,16 +400,16 @@ export default function ProductViewPage() {
               filteredProducts.map((p) => (
                 <div
                   key={p.id}
-                  className="w-full max-w-[920px] h-[230px] border border-gray-300 rounded bg-white shadow flex"
+                  className="w-full border border-gray-300 rounded bg-white shadow flex flex-col sm:flex-row"
                 >
                   {/* Image */}
-                  <div className="w-[200px] flex-shrink-0 relative">
+                  <div className="w-full sm:w-[200px] flex-shrink-0 relative">
                     <Image
                       src={p.image}
                       alt={p.name}
                       width={177}
                       height={178}
-                      className="object-cover"
+                      className="object-cover w-full h-full"
                     />
                   </div>
                   {/* Details */}
@@ -436,18 +436,16 @@ export default function ProductViewPage() {
                           {"★".repeat(p.rating)}
                           {"☆".repeat(5 - p.rating)}
                         </span>
-                        <span className="text-sm text-gray-500">
-                          {p.orders} orders
-                        </span>
+                        <span className="text-sm text-gray-500">{p.orders} orders</span>
                         {p.freeShipping && (
-                          <span className="text-green-500 text-sm">
-                            Free Shipping
-                          </span>
+                          <span className="text-green-500 text-sm">Free Shipping</span>
                         )}
                       </div>
                       <p className="text-sm text-gray-600 mt-2">{p.details}</p>
                     </div>
-                    <Link href={"/product-page"}> <button className="text-blue-500 text-sm">View details</button></Link>
+                    <Link href={"/product-page"}>
+                      <button className="text-blue-500 text-sm">View details</button>
+                    </Link>
                   </div>
                 </div>
               ))
