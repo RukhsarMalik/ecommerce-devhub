@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import {
   FaUser,
@@ -66,8 +67,8 @@ export default function Header() {
               <span>Orders</span>
             </div>
             <div className="flex flex-col items-center text-sm cursor-pointer relative">
-              <FaShoppingCart className="text-lg" />
-              <span>My Cart</span>
+              <Link href={"/cart"} ><FaShoppingCart className="text-lg" />
+              <span>My Cart</span> </Link> 
             </div>
           </div>
 
