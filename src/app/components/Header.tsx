@@ -141,7 +141,7 @@ export default function Header() {
               <span>Profile</span>
               <span>Messages</span>
               <span>Orders</span>
-              <span>My Cart</span>
+              <Link href={"/cart"}><span>My Cart</span></Link>
             </nav>
           </div>
           <div

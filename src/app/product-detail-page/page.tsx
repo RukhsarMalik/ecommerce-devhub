@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronUp, ChevronDown, Heart } from "lucide-react";
+import { ChevronUp, ChevronDown, Heart, X } from "lucide-react";
 import Image from "next/image";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
@@ -16,6 +16,7 @@ export default function ProductViewPage() {
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([]);
   const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   const toggleCollapse = (section: string) => {
     setCollapsed((prev) => ({ ...prev, [section]: !prev[section] }));
@@ -144,127 +145,120 @@ export default function ProductViewPage() {
       !selectedCondition || product.condition.toLowerCase() === selectedCondition.toLowerCase();
     const matchesRating =
       selectedRatings.length === 0 || selectedRatings.includes(product.rating);
-    const matchesPrice =
-      product.price >= minPrice && product.price <= maxPrice;
+    const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
 
     return matchesBrand && matchesFeature && matchesCondition && matchesRating && matchesPrice;
   });
 
-  return (
-    <div className="w-full max-w-[1200px] mx-auto min-h-screen font-sans bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="w-full max-w-[1440px] mx-auto h-auto min-h-[48px] flex flex-wrap items-center px-4 text-gray-600 text-sm">
-        Home &gt; Clothing &gt; Men&apos;s Wear &gt; Summer Clothing
+  // ✅ Sidebar as reusable JSX
+  const renderSidebar = () => (
+    <div className="w-[240px] bg-gray-50 p-4 overflow-y-auto h-full">
+      {/* Category */}
+      <div>
+        <div
+          className="flex justify-between border-gray-300 pt-2 border-t items-center cursor-pointer"
+          onClick={() => toggleCollapse("category")}
+        >
+          <h3 className="font-semibold">Category</h3>
+          {collapsed["category"] ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </div>
+        {!collapsed["category"] && (
+          <ul className="mt-2 text-sm text-gray-600 space-y-1">
+            <li>Mobile Accessory</li>
+            <li>Electronic</li>
+            <li>Smartphones</li>
+            <li>Modern Tech</li>
+            <li className="text-blue-500 cursor-pointer">See all</li>
+          </ul>
+        )}
       </div>
 
-      <div className="flex flex-col lg:flex-row max-w-[1440px] mx-auto">
-        {/* Sidebar */}
-        <div className=" hidden lg:block w-[240px] bg-gray-50 p-4">
-          <div>
-            {/* Category */}
-            <div className="flex justify-between border-gray-300 pt-2 border-t items-center cursor-pointer" onClick={() => toggleCollapse("category")}>
-              <h3 className="font-semibold">Category</h3>
-              {collapsed["category"] ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-            </div>
-            {!collapsed["category"] && (
-              <ul className="mt-2 text-sm text-gray-600 space-y-1">
-                <li>Mobile Accessory</li>
-                <li>Electronic</li>
-                <li>Smartphones</li>
-                <li>Modern Tech</li>
-                <li className="text-blue-500 cursor-pointer">See all</li>
-              </ul>
+      {/* Brand */}
+      <div className="mt-4">
+        <h3
+          className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
+          onClick={() => toggleCollapse("brand")}
+        >
+          Brand {collapsed.brand ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </h3>
+        {!collapsed.brand && (
+          <div className="mt-2">
+            {["Samsung", "Apple", "Huawei", "Pocco", "Lenovo", "Google", "HP", "Sony"].map(
+              (brand) => (
+                <label key={brand} className="block text-sm">
+                  <input
+                    type="checkbox"
+                    className="mr-2 checked:accent-blue-500"
+                    checked={selectedBrands.includes(brand)}
+                    onChange={() => handleBrandChange(brand)}
+                  />
+                  {brand}
+                </label>
+              )
             )}
           </div>
-          {/* Brand */}
-          <div className="mt-4">
-            <h3
-              className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
-              onClick={() => toggleCollapse("brand")}
-            >
-              Brand {collapsed.brand ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-            </h3>
-            {!collapsed.brand && (
-              <div className="mt-2">
-                {["Samsung", "Apple", "Huawei", "Pocco", "Lenovo", "Google", "HP", "Sony"].map(
-                  (brand) => (
-                    <label key={brand} className="block text-sm">
-                      <input
-                        type="checkbox"
-                        className="mr-2 checked:accent-blue-500"
-                        checked={selectedBrands.includes(brand)}
-                        onChange={() => handleBrandChange(brand)}
-                      />
-                      {brand}
-                    </label>
-                  )
-                )}
-              </div>
-            )}
-          </div>
+        )}
+      </div>
 
-          {/* Features */}
-          <div className="mt-4">
-            <h3
-              className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
-              onClick={() => toggleCollapse("features")}
-            >
-              Features {collapsed.features ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-            </h3>
-            {!collapsed.features && (
-              <div className="mt-2">
-                {["Metallic", "Plastic cover", "8GB RAM", "Super power", "Large memory"].map(
-                  (feat) => (
-                    <label key={feat} className="block text-sm">
-                      <input
-                        type="checkbox"
-                        className="mr-2 checked:accent-blue-500"
-                        checked={selectedFeatures.includes(feat)}
-                        onChange={() => handleFeatureChange(feat)}
-                      />
-                      {feat}
-                    </label>
-                  )
-                )}
-              </div>
-            )}
+      {/* Features */}
+      <div className="mt-4">
+        <h3
+          className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
+          onClick={() => toggleCollapse("features")}
+        >
+          Features {collapsed.features ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </h3>
+        {!collapsed.features && (
+          <div className="mt-2">
+            {["Metallic", "Plastic cover", "8GB RAM", "Super power", "Large memory"].map((feat) => (
+              <label key={feat} className="block text-sm">
+                <input
+                  type="checkbox"
+                  className="mr-2 checked:accent-blue-500"
+                  checked={selectedFeatures.includes(feat)}
+                  onChange={() => handleFeatureChange(feat)}
+                />
+                {feat}
+              </label>
+            ))}
           </div>
-          {/* Price Range */}
-        <div className="mt-6 border-gray-300 pt-2 border-t">
-          <div
-            className="flex justify-between items-center cursor-pointer"
-            onClick={() => toggleCollapse("price")}
-          >
-            <h3 className="font-semibold">Price Range</h3>
-            {collapsed["price"] ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-          </div>
+        )}
+      </div>
 
-          {!collapsed["price"] && (
-            <div className="mt-3 space-y-3">
-              {/* Dual Range Slider */}
-              <div className="relative w-full h-6">
-                {/* Track */}
-                <div className="absolute top-1/2 -translate-y-1/2 h-1 w-full bg-gray-300 rounded"></div>
+      {/* Price Range */}
+      <div className="mt-6 border-gray-300 pt-2 border-t">
+        <div
+          className="flex justify-between items-center cursor-pointer"
+          onClick={() => toggleCollapse("price")}
+        >
+          <h3 className="font-semibold">Price Range</h3>
+          {collapsed["price"] ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </div>
 
-                {/* Active Range Highlight */}
-                <div
-                  className="absolute top-1/2 -translate-y-1/2 h-1 bg-blue-500 rounded"
-                  style={{
-                    left: `${(minPrice / 1000) * 100}%`,
-                    right: `${100 - (maxPrice / 1000) * 100}%`,
-                  }}
-                ></div>
+        {!collapsed["price"] && (
+          <div className="mt-3 space-y-3">
+            {/* ✅ Slider Track */}
+            <div className="relative w-full h-6">
+              {/* Background */}
+              <div className="absolute top-1/2 -translate-y-1/2 h-1 w-full bg-gray-300 rounded"></div>
+
+              {/* Active Range */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 h-1 bg-blue-500 rounded"
+                style={{
+                  left: `${(minPrice / 2000) * 100}%`,
+                  width: `${((maxPrice - minPrice) / 2000) * 100}%`,
+                }}
+              ></div>
 
               {/* Min Handle */}
               <input
                 type="range"
                 min="0"
-                max="1000"
+                max="2000"
                 value={minPrice}
-                onChange={(e) =>
-                  setMinPrice(Math.min(Number(e.target.value), maxPrice - 50))
-                }
-                className="absolute w-full pointer-events-none appearance-none bg-transparent accent-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto"
+                onChange={(e) => setMinPrice(Math.min(Number(e.target.value), maxPrice - 50))}
+                className="absolute top-0 w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:cursor-pointer"
               />
 
               {/* Max Handle */}
@@ -273,111 +267,122 @@ export default function ProductViewPage() {
                 min="0"
                 max="2000"
                 value={maxPrice}
-                onChange={(e) =>
-                  setMaxPrice(Math.max(Number(e.target.value), minPrice + 50))
-                }
-                className="absolute w-full pointer-events-none appearance-none bg-transparent accent-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto"
+                onChange={(e) => setMaxPrice(Math.max(Number(e.target.value), minPrice + 50))}
+                className="absolute top-0 w-full h-1 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-blue-500 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:cursor-pointer"
               />
             </div>
 
-      {/* Min/Max Inputs */}
-      <div className="flex items-center gap-2">
-        <input
-          type="number"
-          value={minPrice}
-          onChange={(e) =>
-            setMinPrice(Math.min(Number(e.target.value), maxPrice - 50))
-          }
-          className="w-20 border text-gray-300 bg-white border-gray-300 p-1 text-sm rounded"
-        />
-        <span>-</span>
-        <input
-          type="number"
-          value={maxPrice}
-          onChange={(e) =>
-            setMaxPrice(Math.max(Number(e.target.value), minPrice + 50))
-          }
-          className="w-20 border text-gray-300 bg-white border-gray-300 p-1 text-sm rounded"
-        />
+            {/* Inputs */}
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                value={minPrice}
+                onChange={(e) => setMinPrice(Math.min(Number(e.target.value), maxPrice - 50))}
+                className="w-20 border text-gray-600 bg-white border-gray-300 p-1 text-sm rounded"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Math.max(Number(e.target.value), minPrice + 50))}
+                className="w-20 border text-gray-600 bg-white border-gray-300 p-1 text-sm rounded"
+              />
+            </div>
+
+            {/* Apply Button */}
+            <button className="w-full bg-white border border-gray-300 hover:bg-blue-600 hover:text-white text-blue-500 text-sm py-2 rounded-md">
+              Apply Now
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Apply Button */}
-      <button className="w-full bg-white border border-gray-300 hover:bg-blue-600 text-blue-500 text-sm py-2 rounded-md">
-        Apply Now
-      </button>
+
+      {/* Condition */}
+      <div className="mt-4">
+        <h3
+          className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
+          onClick={() => toggleCollapse("condition")}
+        >
+          Condition {collapsed.condition ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </h3>
+        {!collapsed.condition && (
+          <div className="mt-2">
+            {["Any", "Refurbished", "Brand new", "old items"].map((cond) => (
+              <label key={cond} className="block text-sm">
+                <input
+                  type="radio"
+                  name="condition"
+                  className="mr-2 checked:accent-blue-500"
+                  checked={selectedCondition === cond || (cond === "Any" && !selectedCondition)}
+                  onChange={() => handleConditionChange(cond === "Any" ? null : cond)}
+                />
+                {cond}
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Rating */}
+      <div className="mt-4">
+        <h3
+          className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
+          onClick={() => toggleCollapse("rating")}
+        >
+          Rating {collapsed.rating ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </h3>
+        {!collapsed.rating && (
+          <div className="mt-2">
+            {[5, 4, 3, 2].map((stars) => (
+              <label key={stars} className="block text-sm">
+                <input
+                  type="checkbox"
+                  className="mr-2 checked:accent-blue-500"
+                  checked={selectedRatings.includes(stars)}
+                  onChange={() => handleRatingChange(stars)}
+                />
+                <span className="text-orange-500">{"★".repeat(stars)}</span>
+                <span className="text-gray-300">{"☆".repeat(5 - stars)}</span>
+              </label>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
-  )}
-</div>
+  );
 
+  return (
+    <div className="w-full max-w-[1200px] mx-auto min-h-screen font-sans bg-gray-50">
+      {/* Breadcrumb */}
+      <div className="w-full max-w-[1440px] mx-auto h-auto min-h-[48px] flex flex-wrap items-center px-4 text-gray-600 text-sm">
+        Home &gt; Clothing &gt; Men&apos;s Wear &gt; Summer Clothing
+      </div>
 
-          {/* Condition */}
-          <div className="mt-4">
-            <h3
-              className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
-              onClick={() => toggleCollapse("condition")}
-            >
-              Condition {collapsed.condition ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-            </h3>
-            {!collapsed.condition && (
-              <div className="mt-2">
-                {["Any", "Refurbished", "Brand new", "old items"].map((cond) => (
-                  <label key={cond} className="block text-sm">
-                    <input
-                      type="radio"
-                      name="condition"
-                      className="mr-2 checked:accent-blue-500"
-                      checked={
-                        selectedCondition === cond || (cond === "Any" && !selectedCondition)
-                      }
-                      onChange={() => handleConditionChange(cond === "Any" ? null : cond)}
-                    />
-                    {cond}
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
+      {/* ✅ Mobile Filter Button */}
+      <div className="flex justify-start mt-3 lg:hidden px-4">
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm"
+          onClick={() => setIsMobileFilterOpen(true)}
+        >
+          Filters
+        </button>
+      </div>
 
-          {/* Rating */}
-          <div className="mt-4">
-            <h3
-              className="font-semibold flex justify-between cursor-pointer border-gray-300 pt-2 border-t"
-              onClick={() => toggleCollapse("rating")}
-            >
-              Rating {collapsed.rating ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-            </h3>
-            {!collapsed.rating && (
-              <div className="mt-2">
-                {[5, 4, 3, 2].map((stars) => (
-                  <label key={stars} className="block text-sm">
-                    <input
-                      type="checkbox"
-                      className="mr-2 checked:accent-blue-500"
-                      checked={selectedRatings.includes(stars)}
-                      onChange={() => handleRatingChange(stars)}
-                    />
-                     <span className="text-orange-500">
-                      {"★".repeat(stars)}
-                    </span>
-                    <span className="text-gray-300">
-                      {"☆".repeat(5 - stars)}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
+      <div className="flex flex-col lg:flex-row max-w-[1440px] mx-auto">
+        {/* Sidebar (desktop) */}
+        <div className="hidden lg:block">{renderSidebar()}</div>
 
         {/* Main Content */}
         <div className="flex-1 px-4 py-6">
-          
-           {/* Top Filter Bar */}
+          {/* Top Filter Bar */}
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 w-full h-auto bg-white rounded border border-gray-300 shadow px-4 mb-4">
-            <span className="text-sm">12,911 items in <strong>Mobile accessory</strong></span>
+            <span className="hidden lg:block text-sm">
+              12,911 items in <strong>Mobile accessory</strong>
+            </span>
             <div className="flex items-center gap-4">
               <label className="flex items-center gap-2 text-sm">
-                <input type="checkbox" className= "checked:accent-blue-500 "  /> Verified only
+                <input type="checkbox" className="checked:accent-blue-500" /> Verified only
               </label>
               <select className="border w-[172px] rounded h-[40px] border-gray-300 text-sm p-1">
                 <option>Featured</option>
@@ -387,7 +392,7 @@ export default function ProductViewPage() {
                 <div className="w-[38px] h-[40px] flex items-center justify-center rounded border border-gray-300">
                   <Image src="/product/icon1.png" alt="icon1" width={24} height={24} />
                 </div>
-                <div className="w-[38px] h-[40px] flex items-center justify-center border rounded  border-gray-300">
+                <div className="w-[38px] h-[40px] flex items-center justify-center border rounded border-gray-300">
                   <Image src="/product/icon2.png" alt="icon2" width={24} height={24} />
                 </div>
               </div>
@@ -457,32 +462,41 @@ export default function ProductViewPage() {
           {/* Pagination */}
           <div className="flex justify-end items-center gap-2 mt-6">
             <button
-              className="px-2 border border-gray-300 bg-white h-[40px] rounded flex items-center justify-center"
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              className="w-[48px] h-[40px] border rounded flex items-center justify-center border-gray-300"
             >
-              <FaChevronLeft className="text-gray-500" />
+              <FaChevronLeft />
             </button>
-            {[1, 2, 3].map((num) => (
-              <button
-                key={num}
-                className={`px-3 py-1 border border-gray-300 ${
-                  num === currentPage ? "bg-blue-500 text-white" : "bg-white"
-                }`}
-                onClick={() => setCurrentPage(num)}
-              >
-                {num}
-              </button>
-            ))}
+            <button className="w-[40px] h-[40px] rounded bg-blue-500 text-white">1</button>
+            <button className="w-[40px] h-[40px] rounded border border-gray-300">2</button>
+            <button className="w-[40px] h-[40px] rounded border border-gray-300">3</button>
+            <span className="px-2">...</span>
+            <button className="w-[40px] h-[40px] rounded border border-gray-300">9</button>
             <button
-              className="px-2 border bg-white border-gray-300 h-[40px] rounded flex items-center justify-center"
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, 3))}
+              onClick={() => setCurrentPage((p) => p + 1)}
+              className="w-[48px] h-[40px] border rounded flex items-center justify-center border-gray-300"
             >
               <FaChevronRight />
             </button>
           </div>
         </div>
       </div>
-  
+
+      {/* ✅ Mobile Sidebar Drawer */}
+      {isMobileFilterOpen && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex">
+          <div className="bg-white w-72 h-full shadow-lg relative">
+            <button
+              className="absolute top-3 right-3 text-gray-600"
+              onClick={() => setIsMobileFilterOpen(false)}
+            >
+              <X size={20} />
+            </button>
+            {renderSidebar()}
+          </div>
+          <div className="flex-1" onClick={() => setIsMobileFilterOpen(false)}></div>
+        </div>
+      )}
     </div>
   );
 }
